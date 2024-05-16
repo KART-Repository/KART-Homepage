@@ -4,7 +4,7 @@ import { Footer } from '~/components/Footer'
 import { Header } from '~/components/Header'
 import { BaseHead } from '~/heads/baseHead'
 import { DefaultLayout } from '~/layouts/DefaultLayout'
-import { getClient } from '~/libs/cmsClient'
+import { buildClient } from '~/libs/contentful'
 import { Car } from '~/types.ts/cars'
 
 type Props = {
@@ -25,12 +25,18 @@ export default function Cars({ cars }: Props) {
 }
 
 export const getStaticProps = async () => {
-  const data = await getClient('cars')
+  const client = buildClient()
+  const { items } = await client.getEntries({
+    content_type: 'car',
+  })
 
-  const cars = data.contents.map((car: any) => {
+  const cars = items.map((item: any) => {
+    const car = item.fields
+    const carImage = car.carImage.fields.file.url || ''
     return {
-      carImage: car.Image.url,
       ...car,
+      carImage: carImage,
+      createdAt: item.sys.createdAt,
     } as Car
   })
 

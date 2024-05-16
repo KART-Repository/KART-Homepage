@@ -6,16 +6,17 @@ import Link from 'next/link'
 import styles from './style.module.scss'
 
 import { PageVisual } from '~/components/PageVisual'
-import { Sponsor } from '~/types.ts/sponsors'
+import { CompanySponsor, UniversitySponsor } from '~/types.ts/sponsors'
 
 type Props = {
-  sponsors: Array<Sponsor>
+  companySponsors: Array<CompanySponsor>
+  universitySponsors: Array<UniversitySponsor>
 }
 
-export const SponsorsContainer = ({ sponsors }: Props): ReactElement => {
-  const companySponsors = sponsors.filter((sponsor) => !sponsor.isUniversity)
-  const universitySponsors = sponsors.filter((sponsor) => sponsor.isUniversity)
-
+export const SponsorsContainer = ({
+  companySponsors,
+  universitySponsors,
+}: Props): ReactElement => {
   return (
     <div className={styles.sponsorsContainer}>
       <section>
@@ -47,11 +48,11 @@ export const SponsorsContainer = ({ sponsors }: Props): ReactElement => {
   )
 }
 
-type TableProps = {
-  sponsors: Array<Sponsor>
+type CompanyTableProps = {
+  sponsors: Array<CompanySponsor>
 }
 
-const SponsorsTable = ({ sponsors }: TableProps): ReactElement => {
+const SponsorsTable = ({ sponsors }: CompanyTableProps): ReactElement => {
   return (
     <table className={styles.sponsorsTable}>
       <tbody className={styles.table}>
@@ -59,13 +60,15 @@ const SponsorsTable = ({ sponsors }: TableProps): ReactElement => {
           <tr key={index}>
             <td>
               <div className={styles.sponsorCard}>
-                <Image
-                  src={sponsor.sponsorImage}
-                  alt={sponsor.sponsorName}
-                  style={{ width: sponsor.isSmImage ? '150px' : '250px' }}
-                />
+                {sponsor.sponsorImage && (
+                  <Image
+                    src={sponsor.sponsorImage}
+                    alt={sponsor.sponsorName}
+                    style={{ width: sponsor.isSmImage ? '150px' : '250px' }}
+                  />
+                )}
                 <Link
-                  href={sponsor.sponsorLink}
+                  href={sponsor.sponsorLink ? sponsor.sponsorLink : '/sponsors'}
                   style={{ textDecoration: 'none' }}
                 >
                   {sponsor.sponsorName}
@@ -82,7 +85,13 @@ const SponsorsTable = ({ sponsors }: TableProps): ReactElement => {
   )
 }
 
-const UniversitysRelatedTable = ({ sponsors }: TableProps): ReactElement => {
+type UniversityTableProps = {
+  sponsors: Array<UniversitySponsor>
+}
+
+const UniversitysRelatedTable = ({
+  sponsors,
+}: UniversityTableProps): ReactElement => {
   return (
     <table className={styles.universityRelatedTable}>
       <tbody className={styles.table}>
