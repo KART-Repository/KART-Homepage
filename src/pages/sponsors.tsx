@@ -4,20 +4,27 @@ import { Header } from '~/components/Header'
 import { SponsorsContainer } from '~/components/SponsorsContainer'
 import { BaseHead } from '~/heads/baseHead'
 import { DefaultLayout } from '~/layouts/DefaultLayout'
-import { getClient } from '~/libs/cmsClient'
-import { Sponsor } from '~/types.ts/sponsors'
+import { buildClient } from '~/libs/contentful'
+import { CompanySponsor, UniversitySponsor } from '~/types.ts/sponsors'
 
 type Props = {
-  sponsors: Array<Sponsor>
+  companySponsors: Array<CompanySponsor>
+  universitySponsors: Array<UniversitySponsor>
 }
 
-export default function Sponsors({ sponsors }: Props) {
+export default function Sponsors({
+  companySponsors,
+  universitySponsors,
+}: Props) {
   return (
     <>
       <BaseHead title="京都大学フォーミュラプロジェクトKART" />
       <DefaultLayout>
         <Header active={'sponsors'} />
-        <SponsorsContainer sponsors={sponsors} />
+        <SponsorsContainer
+          companySponsors={companySponsors}
+          universitySponsors={universitySponsors}
+        />
         <Footer />
       </DefaultLayout>
     </>
@@ -25,16 +32,37 @@ export default function Sponsors({ sponsors }: Props) {
 }
 
 export const getStaticProps = async () => {
-  const data = await getClient('sponsors')
+  const client = buildClient()
+  const companyItems = await client.getEntries({
+    content_type: 'companySponsor',
+  })
 
-  const sponsors = data.contents.map((sponsor: any) => {
+  const universityItems = await client.getEntries({
+    content_type: 'universitySponsors',
+  })
+
+  const companySponsors = companyItems.items.map((item: any) => {
+    const sponsor = item.fields
+    const sponsorImage = sponsor.sponsorImage.fields.file.url || ''
+
     return {
-      sponsorImage: sponsor.Image ? sponsor.Image.url : '',
       ...sponsor,
-    } as Sponsor
+      sponsorImage: sponsorImage,
+      createdAt: item.sys.createdAt,
+    } as CompanySponsor
+  })
+
+  const universitySponsors = universityItems.items.map((item: any) => {
+    return {
+      ...item.fields,
+      createdAt: item.sys.createdAt,
+    } as UniversitySponsor
   })
 
   return {
-    props: { sponsors: sponsors },
+    props: {
+      companySponsors: companySponsors,
+      universitySponsors: universitySponsors,
+    },
   }
 }
