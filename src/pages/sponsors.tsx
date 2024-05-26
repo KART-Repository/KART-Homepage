@@ -4,7 +4,7 @@ import { Header } from '~/components/Header'
 import { SponsorsContainer } from '~/components/SponsorsContainer'
 import { BaseHead } from '~/heads/baseHead'
 import { DefaultLayout } from '~/layouts/DefaultLayout'
-import { buildClient } from '~/libs/contentful'
+import { client } from '~/libs/cmsClient'
 import { CompanySponsor, UniversitySponsor } from '~/types.ts/sponsors'
 
 type Props = {
@@ -32,30 +32,25 @@ export default function Sponsors({
 }
 
 export const getStaticProps = async () => {
-  const client = buildClient()
-  const companyItems = await client.getEntries({
-    content_type: 'companySponsor',
+  const companyItems = await client.get({
+    endpoint: 'company_sponsors',
   })
 
-  const universityItems = await client.getEntries({
-    content_type: 'universitySponsors',
+  const universityItems = await client.get({
+    endpoint: 'university_sponsors',
   })
 
-  const companySponsors = companyItems.items.map((item: any) => {
-    const sponsor = item.fields
-    const sponsorImage = sponsor.sponsorImage.fields.file.url || ''
-
+  const companySponsors = companyItems.contents.map((item: any) => {
+    const sponsorImage = item.sponsorImage?.url || ''
     return {
-      ...sponsor,
+      ...item,
       sponsorImage: sponsorImage,
-      createdAt: item.sys.createdAt,
     } as CompanySponsor
   })
 
-  const universitySponsors = universityItems.items.map((item: any) => {
+  const universitySponsors = universityItems.contents.map((item: any) => {
     return {
-      ...item.fields,
-      createdAt: item.sys.createdAt,
+      ...item,
     } as UniversitySponsor
   })
 
