@@ -30,7 +30,7 @@ export const getStaticProps = async () => {
     content_type: 'car',
   })
 
-  const cars = items.map((item: any) => {
+  const cars = items.sort((a, b) => Number(b.fields.year) - Number(a.fields.year)).map((item: any) => {
     const car = item.fields
     const carImage = car.carImage.fields.file.url || ''
     return {

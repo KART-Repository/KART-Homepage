@@ -37,22 +37,20 @@ export const CarsContainer = ({ cars }: Props): ReactElement => {
               tread={carData.tread}
               weight={carData.weight}
               overallRanking={carData.overallRanking}
-              description={carData.description}
-            />
+              description={carData.description} year={''}            />
           ) : (
             <CarCard
-              isLeft
-              key={index}
-              carImage={carData.carImage}
-              carType={carData.carType}
-              carName={carData.carName}
-              engine={carData.engine}
-              wheelbase={carData.wheelbase}
-              tread={carData.tread}
-              weight={carData.weight}
-              overallRanking={carData.overallRanking}
-              description={carData.description}
-            />
+                isLeft
+                key={index}
+                carImage={carData.carImage}
+                carType={carData.carType}
+                carName={carData.carName}
+                engine={carData.engine}
+                wheelbase={carData.wheelbase}
+                tread={carData.tread}
+                weight={carData.weight}
+                overallRanking={carData.overallRanking}
+                description={carData.description} year={''}            />
           ),
         )}
         <div className={styles.bottomCars}>
@@ -66,8 +64,7 @@ export const CarsContainer = ({ cars }: Props): ReactElement => {
                 wheelbase={carData.wheelbase}
                 tread={carData.tread}
                 weight={carData.weight}
-                overallRanking={carData.overallRanking}
-              />
+                overallRanking={carData.overallRanking} year={''}              />
             </div>
           ))}
         </div>

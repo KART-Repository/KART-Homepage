@@ -1,4 +1,5 @@
 export type Car = {
+  year: string
   createdAt: Date
   carImage: string
   carType: string
