@@ -33,7 +33,7 @@ export default function Sponsors({
 
 export const getStaticProps = async () => {
   const companyItems = await client.get({
-    endpoint: 'company_sponsors',
+    endpoint: 'company_sponsors?limit=100',
   })
 
   const universityItems = await client.get({
