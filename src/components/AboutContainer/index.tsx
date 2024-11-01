@@ -36,7 +36,7 @@ export const AboutContainer = (): ReactElement => {
             <Image src={`${basePath}/images/award.jpg`} alt="" w={320} />
             <ul>
               <li>
-                <a href="">1st prize over all (2013)</a>
+                <a href="">Special Awards (2024)</a>
               </li>
             </ul>
           </div>
