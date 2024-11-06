@@ -74,7 +74,7 @@ export const TopContainer = (): ReactElement => {
           <NewsCard
             imageUrl={`${basePath}/images/sinkan.jpg`}
             href=""
-            title="2020年度の設計が進んでいます!"
+            title="2025年度の設計が進んでいます!"
             desc="We welcome new members!"
           />
           <SubCard
@@ -105,7 +105,7 @@ export const TopContainer = (): ReactElement => {
       <section className={styles.discription}>
         <h3>RECENT ACTIVITIES</h3>
         <p>
-          第17回全日本学生フォーミュラ大会 2019年8月26日～30日 (2019.11.15
+          第22回学生フォーミュラ日本大会 2024年9月9日～14日 (2024.11.06
           updated)
         </p>
         <Carousel
